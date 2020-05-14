@@ -17,6 +17,20 @@ settings:
   min_similarity: 0.8
   repos:
     -  https://github.com/GoogleContainerTools/skaffold
+  member-roles:
+    # Automatically add members from these roles (exclude default of "member")
+    # See https://developer.github.com/v4/enum/commentauthorassociation/
+    - collaborator
+    - owner
+  members:
+    # Always consider these folks to be members
+    - balopat
+    - nkubala
+    - dgageot
+    - tstromberg
+    - tejal29
+    # emeritus
+    - r2d4
 
 collections:
   - id: daily
