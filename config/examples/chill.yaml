@@ -1,0 +1,159 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+settings:
+  name: july-chill
+  repos:
+    - https://github.com/GoogleContainerTools/skaffold
+    - https://github.com/GoogleCloudPlatform/cloud-code-vscode
+    - https://github.com/GoogleCloudPlatform/cloud-code-intellij
+    - https://github.com/kubernetes/minikube
+
+collections:
+  - id: chill-list
+    name: July-Chill Per-Project
+    description: >
+      Items across all teams which are in-scope for the july-chill
+    rules:
+      - chill-intellij
+      - chill-vscode
+      - chill-minikube
+      - chill-skaffold
+
+  - id: chill-kanban
+    name: July-Chill Kanban
+    display: kanban
+    description: >
+      Items across all teams which are in-scope for the july-chill
+    rules:
+      - chill-not-started
+      - chill-assignee-updated
+      - chill-pr-needs-review
+      - chill-pr-needs-work
+      - chill-pr-needs-merge
+      - chill-recently-closed
+
+  - id: __open__
+    name: All open PR's and Issues that should be considered for repository stats (hidden)
+    used_for_statistics: true
+    hidden: true
+    rules:
+      - open-prs
+      - open-issues
+
+  - id: __velocity__
+    name: issues to include in velocity metrics
+    used_for_statistics: true
+    hidden: true
+    rules:
+      - closed-milestone-issues
+      - closed-chill-issues
+
+rules:
+  chill-intellij:
+    name: "IntelliJ"
+    type: issue
+    filters:
+      - label: july-chill
+    repos:
+      - https://github.com/GoogleCloudPlatform/cloud-code-intellij
+
+  chill-vscode:
+    name: "VS Code"
+    type: issue
+    filters:
+      - label: july-chill
+    repos:
+      - https://github.com/GoogleCloudPlatform/cloud-code-vscode
+
+  chill-minikube:
+    name: minikube
+    type: issue
+    filters:
+      - label: july-chill
+    repos:
+      - https://github.com/kubernetes/minikube
+
+  chill-skaffold:
+    name: skaffold
+    type: issue
+    filters:
+      - label: july-chill
+    repos:
+      - https://github.com/GoogleContainerTools/skaffold
+
+  chill-not-started:
+    name: "Not started"
+    type: issue
+    filters:
+      - label: july-chill
+      - tag: "!assignee-updated"
+      - tag: "!(assignee-open-pr|assignee-closed-pr)"
+  chill-assignee-updated:
+    name: "In Progress"
+    type: issue
+    filters:
+      - label: july-chill
+      - tag: "assignee-updated"
+      - tag: "!(pr-changes-requested|pr-reviewer-comment|pr-unreviewed|pr-new-commits|pr-approved|pr-changes-requested)"
+  chill-pr-needs-work:
+    name: "PR needs work"
+    type: issue
+    filters:
+      - label: july-chill
+      - tag: "(pr-changes-requested|pr-reviewer-comment)"
+  chill-pr-needs-review:
+    name: "PR needs Review"
+    type: issue
+    filters:
+      - label: july-chill
+      - tag: "(pr-unreviewed|pr-new-commits)"
+  chill-pr-needs-merge:
+    name: "PR needs Merge"
+    type: issue
+    filters:
+      - label: july-chill
+      - tag: "(pr-approved|pr-approved-but-pushed)"
+  chill-recently-closed:
+    name: "Finish Line"
+    type: issue
+    filters:
+      - label: july-chill
+      - state: closed
+      - updated: -14d
+
+  # for statistics generation
+  open-issues:
+    name: "Open Issues"
+    type: issue
+
+  open-prs:
+    name: "Open PRs"
+    type: pull_request
+
+  closed-milestone-issues:
+    name: "Recently closed issues within a milestone"
+    type: issue
+    filters:
+      - state: closed
+      - closed: -14d
+      - milestone: ".*"
+
+  closed-chill-issues:
+    name: "Recently closed issues that are part of the chill"
+    type: issue
+    filters:
+      - state: closed
+      - closed: -14d
+      - label: "july-chill"
