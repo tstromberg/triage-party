@@ -19,6 +19,8 @@ settings:
     - https://github.com/GoogleCloudPlatform/cloud-code-vscode
     - https://github.com/GoogleCloudPlatform/cloud-code-intellij
     - https://github.com/kubernetes/minikube
+    - https://github.com/GoogleCloudPlatform/cloud-code-intellij-internal
+    - https://github.com/GoogleCloudPlatform/cloud-code-vscode-internal
 
 collections:
   - id: project
@@ -34,6 +36,7 @@ collections:
   - id: progress
     name: Progress
     display: kanban
+    overflow: 4
     description: >
       Items across all teams which are in-scope for the july-chill
     rules:
@@ -68,6 +71,7 @@ rules:
       - label: july-chill
     repos:
       - https://github.com/GoogleCloudPlatform/cloud-code-intellij
+      - https://github.com/GoogleCloudPlatform/cloud-code-intellij-internal
 
   chill-vscode:
     name: "VS Code"
@@ -76,6 +80,7 @@ rules:
       - label: july-chill
     repos:
       - https://github.com/GoogleCloudPlatform/cloud-code-vscode
+      - https://github.com/GoogleCloudPlatform/cloud-code-vscode-internal
 
   chill-minikube:
     name: minikube
