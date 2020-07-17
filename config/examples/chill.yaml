@@ -21,8 +21,8 @@ settings:
     - https://github.com/kubernetes/minikube
 
 collections:
-  - id: chill-list
-    name: July-Chill Per-Project
+  - id: project
+    name: Per-Project
     description: >
       Items across all teams which are in-scope for the july-chill
     rules:
@@ -31,8 +31,8 @@ collections:
       - chill-minikube
       - chill-skaffold
 
-  - id: chill-kanban
-    name: July-Chill Kanban
+  - id: progress
+    name: Progress
     display: kanban
     description: >
       Items across all teams which are in-scope for the july-chill
