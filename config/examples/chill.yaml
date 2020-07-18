@@ -310,24 +310,36 @@ rules:
       - label: july-chill
       - tag: "assignee-updated"
       - tag: "!(pr-changes-requested|pr-reviewer-comment|pr-unreviewed|pr-new-commits|pr-approved|pr-changes-requested)"
+    repos:
+      - https://github.com/GoogleContainerTools/skaffold
+
   skaffold-pr-needs-work:
     name: "PR needs work"
     type: issue
     filters:
       - label: july-chill
       - tag: "(pr-changes-requested|pr-reviewer-comment)"
+    repos:
+      - https://github.com/GoogleContainerTools/skaffold
+
   skaffold-pr-needs-review:
     name: "PR needs Review"
     type: issue
     filters:
       - label: july-chill
       - tag: "(pr-unreviewed|pr-new-commits)"
+    repos:
+      - https://github.com/GoogleContainerTools/skaffold
+
   skaffold-pr-needs-merge:
     name: "PR needs Merge"
     type: issue
     filters:
       - label: july-chill
       - tag: "(pr-approved|pr-approved-but-pushed)"
+    repos:
+      - https://github.com/GoogleContainerTools/skaffold
+
   skaffold-recently-closed:
     name: "Finish Line"
     type: issue
