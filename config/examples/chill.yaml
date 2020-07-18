@@ -16,8 +16,6 @@ settings:
   name: july-chill
   repos:
     - https://github.com/GoogleContainerTools/skaffold
-    - https://github.com/GoogleCloudPlatform/cloud-code-vscode
-    - https://github.com/GoogleCloudPlatform/cloud-code-intellij
     - https://github.com/kubernetes/minikube
     - https://github.com/GoogleCloudPlatform/cloud-code-intellij-internal
     - https://github.com/GoogleCloudPlatform/cloud-code-vscode-internal
@@ -34,7 +32,7 @@ collections:
       - chill-skaffold
 
   - id: progress
-    name: Progress
+    name: All Projects
     display: kanban
     overflow: 4
     description: >
@@ -46,6 +44,66 @@ collections:
       - chill-pr-needs-work
       - chill-pr-needs-merge
       - chill-recently-closed
+
+  - id: intellij
+    name: IntelliJ
+    display: kanban
+    overflow: 4
+    velocity: intellij-velocity
+    description: >
+      Items within IntelliJ which are in-scope for the july-chill
+    rules:
+      - intellij-not-started
+      - intellij-assignee-updated
+      - intellij-pr-needs-review
+      - intellij-pr-needs-work
+      - intellij-pr-needs-merge
+      - intellij-recently-closed
+
+  - id: vscode
+    name: VSCode
+    display: kanban
+    overflow: 4
+    velocity: vscode-velocity
+    description: >
+      Items within VSCode which are in-scope for the july-chill
+    rules:
+      - vscode-not-started
+      - vscode-assignee-updated
+      - vscode-pr-needs-review
+      - vscode-pr-needs-work
+      - vscode-pr-needs-merge
+      - vscode-recently-closed
+
+  - id: skaffold
+    name: Skaffold
+    display: kanban
+    overflow: 3
+    velocity: skaffold-velocity
+    description: >
+      Items within Skaffold which are in-scope for the july-chill
+    rules:
+      - skaffold-not-started
+      - skaffold-assignee-updated
+      - skaffold-pr-needs-review
+      - skaffold-pr-needs-work
+      - skaffold-pr-needs-merge
+      - skaffold-recently-closed
+
+  - id: minikube
+    name: minikube
+    display: kanban
+    overflow: 3
+    velocity: minikube-velocity
+    description: >
+      Items within minikube which are in-scope for the july-chill
+    rules:
+      - minikube-not-started
+      - minikube-assignee-updated
+      - minikube-pr-needs-review
+      - minikube-pr-needs-work
+      - minikube-pr-needs-merge
+      - minikube-recently-closed
 
   - id: __open__
     name: All open PR's and Issues that should be considered for repository stats (hidden)
@@ -64,6 +122,40 @@ collections:
       - closed-pr-issues
       - closed-chill-issues
 
+  - id: intellij-velocity
+    name: issues to include in intellij velocity metrics
+    used_for_statistics: true
+    hidden: true
+    rules:
+      - intellij-closed-milestone
+      - intellij-closed-chill
+
+  - id: vscode-velocity
+    name: issues to include in vscode velocity metrics
+    used_for_statistics: true
+    hidden: true
+    rules:
+      - vscode-closed-priority
+      - vscode-closed-pr
+      - vscode-closed-chill
+
+  - id: minikube-velocity
+    name: issues to include in minikube velocity metrics
+    used_for_statistics: true
+    hidden: true
+    rules:
+      - minikube-closed-milestone
+      - minikube-closed-chill
+
+  - id: skaffold-velocity
+    name: issues to include in Skaffold velocity metrics
+    used_for_statistics: true
+    hidden: true
+    rules:
+      - skaffold-closed-milestone
+      - skaffold-closed-chill
+      - skaffold-closed-priority
+
 rules:
   chill-intellij:
     name: "IntelliJ"
@@ -72,7 +164,6 @@ rules:
     filters:
       - label: july-chill
     repos:
-      - https://github.com/GoogleCloudPlatform/cloud-code-intellij
       - https://github.com/GoogleCloudPlatform/cloud-code-intellij-internal
 
   chill-vscode:
@@ -82,7 +173,6 @@ rules:
     filters:
       - label: july-chill
     repos:
-      - https://github.com/GoogleCloudPlatform/cloud-code-vscode
       - https://github.com/GoogleCloudPlatform/cloud-code-vscode-internal
 
   chill-minikube:
@@ -144,6 +234,226 @@ rules:
       - state: closed
       - updated: -14d
 
+  vscode-not-started:
+    name: "Not started"
+    type: issue
+    filters:
+      - label: july-chill
+      - tag: "!assignee-updated"
+      - tag: "!(assignee-open-pr|assignee-closed-pr)"
+      - tag: "!(pr-changes-requested|pr-reviewer-comment|pr-unreviewed|pr-new-commits|pr-approved|pr-changes-requested)"
+    repos:
+      - https://github.com/GoogleCloudPlatform/cloud-code-vscode-internal
+
+  vscode-assignee-updated:
+    name: "In Progress"
+    type: issue
+    filters:
+      - label: july-chill
+      - tag: "assignee-updated"
+      - tag: "!(pr-changes-requested|pr-reviewer-comment|pr-unreviewed|pr-new-commits|pr-approved|pr-changes-requested)"
+    repos:
+      - https://github.com/GoogleCloudPlatform/cloud-code-vscode-internal
+
+  vscode-pr-needs-work:
+    name: "PR needs work"
+    type: issue
+    filters:
+      - label: july-chill
+      - tag: "(pr-changes-requested|pr-reviewer-comment)"
+    repos:
+      - https://github.com/GoogleCloudPlatform/cloud-code-vscode-internal
+
+  vscode-pr-needs-review:
+    name: "PR needs Review"
+    type: issue
+    filters:
+      - label: july-chill
+      - tag: "(pr-unreviewed|pr-new-commits)"
+    repos:
+      - https://github.com/GoogleCloudPlatform/cloud-code-vscode-internal
+
+  vscode-pr-needs-merge:
+    name: "PR needs Merge"
+    type: issue
+    filters:
+      - label: july-chill
+      - tag: "(pr-approved|pr-approved-but-pushed)"
+    repos:
+      - https://github.com/GoogleCloudPlatform/cloud-code-vscode-internal
+
+  vscode-recently-closed:
+    name: "Finish Line"
+    type: issue
+    filters:
+      - label: july-chill
+      - state: closed
+      - updated: -14d
+    repos:
+      - https://github.com/GoogleCloudPlatform/cloud-code-vscode-internal
+
+  skaffold-not-started:
+    name: "Not started"
+    type: issue
+    filters:
+      - label: july-chill
+      - tag: "!assignee-updated"
+      - tag: "!(assignee-open-pr|assignee-closed-pr)"
+      - tag: "!(pr-changes-requested|pr-reviewer-comment|pr-unreviewed|pr-new-commits|pr-approved|pr-changes-requested)"
+    repos:
+      - https://github.com/GoogleContainerTools/skaffold
+
+  skaffold-assignee-updated:
+    name: "In Progress"
+    type: issue
+    filters:
+      - label: july-chill
+      - tag: "assignee-updated"
+      - tag: "!(pr-changes-requested|pr-reviewer-comment|pr-unreviewed|pr-new-commits|pr-approved|pr-changes-requested)"
+  skaffold-pr-needs-work:
+    name: "PR needs work"
+    type: issue
+    filters:
+      - label: july-chill
+      - tag: "(pr-changes-requested|pr-reviewer-comment)"
+  skaffold-pr-needs-review:
+    name: "PR needs Review"
+    type: issue
+    filters:
+      - label: july-chill
+      - tag: "(pr-unreviewed|pr-new-commits)"
+  skaffold-pr-needs-merge:
+    name: "PR needs Merge"
+    type: issue
+    filters:
+      - label: july-chill
+      - tag: "(pr-approved|pr-approved-but-pushed)"
+  skaffold-recently-closed:
+    name: "Finish Line"
+    type: issue
+    filters:
+      - label: july-chill
+      - state: closed
+      - updated: -14d
+    repos:
+      - https://github.com/GoogleContainerTools/skaffold
+
+  intellij-not-started:
+    name: "Not started"
+    type: issue
+    filters:
+      - label: july-chill
+      - tag: "!assignee-updated"
+      - tag: "!(assignee-open-pr|assignee-closed-pr)"
+      - tag: "!(pr-changes-requested|pr-reviewer-comment|pr-unreviewed|pr-new-commits|pr-approved|pr-changes-requested)"
+    repos:
+      - https://github.com/GoogleCloudPlatform/cloud-code-intellij-internal
+
+  intellij-assignee-updated:
+    name: "In Progress"
+    type: issue
+    filters:
+      - label: july-chill
+      - tag: "assignee-updated"
+      - tag: "!(pr-changes-requested|pr-reviewer-comment|pr-unreviewed|pr-new-commits|pr-approved|pr-changes-requested)"
+    repos:
+      - https://github.com/GoogleCloudPlatform/cloud-code-intellij-internal
+
+  intellij-pr-needs-work:
+    name: "PR needs work"
+    type: issue
+    filters:
+      - label: july-chill
+      - tag: "(pr-changes-requested|pr-reviewer-comment)"
+    repos:
+      - https://github.com/GoogleCloudPlatform/cloud-code-intellij-internal
+
+  intellij-pr-needs-review:
+    name: "PR needs Review"
+    type: issue
+    filters:
+      - label: july-chill
+      - tag: "(pr-unreviewed|pr-new-commits)"
+    repos:
+      - https://github.com/GoogleCloudPlatform/cloud-code-intellij-internal
+
+  intellij-pr-needs-merge:
+    name: "PR needs Merge"
+    type: issue
+    filters:
+      - label: july-chill
+      - tag: "(pr-approved|pr-approved-but-pushed)"
+    repos:
+      - https://github.com/GoogleCloudPlatform/cloud-code-intellij-internal
+
+  intellij-recently-closed:
+    name: "Finish Line"
+    type: issue
+    filters:
+      - label: july-chill
+      - state: closed
+      - updated: -14d
+    repos:
+      - https://github.com/GoogleCloudPlatform/cloud-code-intellij-internal
+
+  minikube-not-started:
+    name: "Not started"
+    type: issue
+    filters:
+      - label: july-chill
+      - tag: "!assignee-updated"
+      - tag: "!(assignee-open-pr|assignee-closed-pr)"
+      - tag: "!(pr-changes-requested|pr-reviewer-comment|pr-unreviewed|pr-new-commits|pr-approved|pr-changes-requested)"
+    repos:
+      - https://github.com/kubernetes/minikube
+
+  minikube-assignee-updated:
+    name: "In Progress"
+    type: issue
+    filters:
+      - label: july-chill
+      - tag: "assignee-updated"
+      - tag: "!(pr-changes-requested|pr-reviewer-comment|pr-unreviewed|pr-new-commits|pr-approved|pr-changes-requested)"
+    repos:
+      - https://github.com/kubernetes/minikube
+
+  minikube-pr-needs-work:
+    name: "PR needs work"
+    type: issue
+    filters:
+      - label: july-chill
+      - tag: "(pr-changes-requested|pr-reviewer-comment)"
+    repos:
+      - https://github.com/kubernetes/minikube
+
+  minikube-pr-needs-review:
+    name: "PR needs Review"
+    type: issue
+    filters:
+      - label: july-chill
+      - tag: "(pr-unreviewed|pr-new-commits)"
+    repos:
+      - https://github.com/kubernetes/minikube
+
+  minikube-pr-needs-merge:
+    name: "PR needs Merge"
+    type: issue
+    filters:
+      - label: july-chill
+      - tag: "(pr-approved|pr-approved-but-pushed)"
+    repos:
+      - https://github.com/kubernetes/minikube
+
+  minikube-recently-closed:
+    name: "Finish Line"
+    type: issue
+    filters:
+      - label: july-chill
+      - state: closed
+      - updated: -14d
+    repos:
+      - https://github.com/kubernetes/minikube
+
   # for statistics generation
   open-issues:
     name: "Open Issues"
@@ -184,3 +494,112 @@ rules:
       - state: closed
       - closed: -14d
       - label: "july-chill"
+
+  vscode-closed-priority:
+    name: "Recently closed high priority issues"
+    type: issue
+    filters:
+      - state: closed
+      - closed: -14d
+      - created: -90d
+      - milestone: ".*"
+      - label: "p[01]|important"
+    repos:
+      - https://github.com/GoogleCloudPlatform/cloud-code-vscode-internal
+
+  vscode-closed-pr:
+    name: "Recently closed issues with a PR"
+    type: issue
+    filters:
+      - state: closed
+      - closed: -14d
+      - created: -90d
+      - milestone: ".*"
+      - tag: pr-merged
+    repos:
+      - https://github.com/GoogleCloudPlatform/cloud-code-vscode-internal
+
+  vscode-closed-chill:
+    name: "Recently closed issues that are part of the chill"
+    type: issue
+    filters:
+      - state: closed
+      - closed: -14d
+      - label: "july-chill"
+    repos:
+      - https://github.com/GoogleCloudPlatform/cloud-code-vscode-internal
+
+  minikube-closed-milestone:
+    name: "Recently closed milestone issues"
+    type: issue
+    filters:
+      - state: closed
+      - closed: -90d
+      - milestone: ".*"
+      - label: "!triage/duplicate"
+    repos:
+      - https://github.com/kubernetes/minikube
+
+  minikube-closed-chill:
+    name: "Recently closed issues that are part of the chill"
+    type: issue
+    filters:
+      - state: closed
+      - closed: -14d
+      - label: "july-chill"
+    repos:
+      - https://github.com/kubernetes/minikube
+
+  intellij-closed-milestone:
+    name: "Recently closed milestone issues"
+    type: issue
+    filters:
+      - state: closed
+      - closed: -90d
+      - milestone: ".*"
+      - label: "!triage/duplicate"
+    repos:
+      - https://github.com/GoogleCloudPlatform/cloud-code-intellij-internal
+
+  intellij-closed-chill:
+    name: "Recently closed issues that are part of the chill"
+    type: issue
+    filters:
+      - state: closed
+      - closed: -14d
+      - label: "july-chill"
+    repos:
+      - https://github.com/GoogleCloudPlatform/cloud-code-intellij-internal
+
+  skaffold-closed-milestone:
+    name: "Recently closed milestone issues"
+    type: issue
+    filters:
+      - state: closed
+      - closed: -30d
+      - milestone: ".*"
+      - label: "!triage/duplicate"
+    repos:
+      - https://github.com/GoogleContainerTools/skaffold
+
+  skaffold-closed-chill:
+    name: "Recently closed issues that are part of the chill"
+    type: issue
+    filters:
+      - state: closed
+      - closed: -14d
+      - label: "july-chill"
+    repos:
+      - https://github.com/GoogleContainerTools/skaffold
+
+  skaffold-closed-priority:
+    name: "Recently closed high priority issues"
+    type: issue
+    filters:
+      - state: closed
+      - closed: -14d
+      - created: -90d
+      - milestone: ".*"
+      - label: "p[01]|important"
+    repos:
+      - https://github.com/GoogleContainerTools/skaffold
