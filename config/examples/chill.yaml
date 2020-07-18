@@ -60,7 +60,8 @@ collections:
     used_for_statistics: true
     hidden: true
     rules:
-      - closed-milestone-issues
+      - closed-priority-issues
+      - closed-pr-issues
       - closed-chill-issues
 
 rules:
@@ -105,6 +106,7 @@ rules:
       - label: july-chill
       - tag: "!assignee-updated"
       - tag: "!(assignee-open-pr|assignee-closed-pr)"
+      - tag: "!(pr-changes-requested|pr-reviewer-comment|pr-unreviewed|pr-new-commits|pr-approved|pr-changes-requested)"
   chill-assignee-updated:
     name: "In Progress"
     type: issue
@@ -142,18 +144,34 @@ rules:
   open-issues:
     name: "Open Issues"
     type: issue
+    filters:
+      - label: july-chill
 
   open-prs:
     name: "Open PRs"
     type: pull_request
+    filters:
+      - label: july-chill
 
-  closed-milestone-issues:
-    name: "Recently closed issues within a milestone"
+  closed-priority-issues:
+    name: "Recently closed high priority issues"
     type: issue
     filters:
       - state: closed
       - closed: -14d
+      - created: -90d
       - milestone: ".*"
+      - label: "p[01]|important"
+
+  closed-pr-issues:
+    name: "Recently closed issues with a PR"
+    type: issue
+    filters:
+      - state: closed
+      - closed: -14d
+      - created: -90d
+      - milestone: ".*"
+      - tag: pr-merged
 
   closed-chill-issues:
     name: "Recently closed issues that are part of the chill"
