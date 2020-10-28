@@ -45,13 +45,13 @@ collections:
        * Keeping an open dialog with our users
        * Initial prioritization (does not have to be perfect)
     rules:
+      # Don't leave code reviews hanging
+      - pr-reviewable
       # SLO violations
       - issue-needs-priority-slo
       - issue-needs-comment-slo
       - issue-important-slo
       - issue-longterm-slo
-      # Don't leave code reviews hanging
-      - pr-reviewable
       # missing initial feedback
       - issue-needs-kind
       - issue-needs-priority
@@ -73,6 +73,10 @@ collections:
        * Raising the priority for hot issues
     rules:
       - discuss
+      # PR's needing closure
+      - pr-reviewable-overdue
+      - pr-approved-stale
+      - pr-unapproved-stale
       # Issues needing closure
       - issue-stale-needs-info
       - issue-stale-support
@@ -83,10 +87,6 @@ collections:
       # SLO
       - issue-near-important-slo
       - issue-near-longterm-slo
-      # PR's needing closure
-      - pr-reviewable-older
-      - pr-approved-stale
-      - pr-unapproved-stale
       # Issues needing reprioritization
       - many-reactions
       - many-commenters
@@ -303,7 +303,7 @@ rules:
 
   # Don't leave code reviews hanging
   pr-reviewable:
-    name: "Pull Requests: Review Ready"
+    name: "Pull Requests: Review Ready for over a day"
     resolution: "Review requests or mark them as do-not-merge/work-in-progress"
     type: pull_request
     filters:
@@ -315,8 +315,8 @@ rules:
       # Temporarily workaround inability to track PR eligibility
       - updated: +1d
 
-  pr-reviewable-older:
-    name: "Pull Requests: Review Ready"
+  pr-reviewable-overdue:
+    name: "Pull Requests: Overdue for review"
     resolution: "Review requests or mark them as do-not-merge/work-in-progress"
     type: pull_request
     filters:
@@ -325,7 +325,7 @@ rules:
       - label: "!cncf-cla: no"
       - tag: "!changes-requested"
       - tag: "!send"
-      - updated: +2d
+      - updated: +3d
 
   # Issues missing initial feedback
   issue-needs-kind:
