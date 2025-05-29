@@ -21,7 +21,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/google/go-github/v33/github"
+	"github.com/google/go-github/v72/github"
 	"github.com/google/triage-party/pkg/provider"
 )
 

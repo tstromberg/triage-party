@@ -24,7 +24,7 @@ import (
 	"github.com/google/triage-party/pkg/persist"
 	"github.com/google/triage-party/pkg/provider"
 
-	"github.com/google/go-github/v33/github"
+	"github.com/google/go-github/v72/github"
 	"github.com/google/triage-party/pkg/logu"
 	"gopkg.in/yaml.v2"
 	"k8s.io/klog/v2"
